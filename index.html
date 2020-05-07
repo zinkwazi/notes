@@ -1,0 +1,22 @@
+Notes and useful commands...
+
+==== Mac ====
+/sbin/mount -uw /
+rm -v /var/db/.AppleSetupDone
+sudo dscl . create /Users/admin IsHidden 1
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+==== SSH ====
+_IP=$(/bin/hostname -I) || true
+TPORT=1088
+sudo -H -u pi /usr/bin/autossh -f -o ServerAliveInterval=3 -o ServerAliveCountMax=3 -nNTR $TPORT:localhost:22 dev.foo.com
+sudo -H -u pi /usr/bin/wget -qO- "http://www.foo.com/pihome/index.php?tport=$TPORT&ip=$_IP" &> /dev/null
+ssh -R 8080:192.168.1.2:3389 me@office.com -p 8008
+ssh -R 8080:localhost:5900 me@office.com -p 8008
+
+==== Windows ====
+Add-WindowsCapability -Online -Name OpenSSH.Client*
+dism /online /Enable-Feature /FeatureName:TelnetClient
+
+1..254 | ForEach-Object {Get-WmiObject Win32_PingStatus -Filter "Address='192.168.0.$_' and Timeout=200 and ResolveAddressNames='true' and StatusCode=0" | select ProtocolAddress*}
+
